@@ -15,20 +15,20 @@ const Main = () => {
         >
           {/* Logo */}
           <Box>
-            <Typography variant="h5" style={{ fontWeight: "bold" }}>
+            <Typography variant="h4" style={{ fontWeight: "bold" }}>
               ZNP TEST
             </Typography>
             <Typography>Who are you in the apocalypse</Typography>
           </Box>
           {/* TopNavbar */}
           <Box>
-            <Link to="/" style={{ padding: "0 10px", fontSize: "12px" }}>
+            <Link to="/" style={{ padding: "0 10px", fontSize: "14px" }}>
               뉴클리어 아포칼립스 메인
             </Link>
-            <Link to="/" style={{ padding: "0 10px", fontSize: "12px" }}>
+            <Link to="/" style={{ padding: "0 10px", fontSize: "14px" }}>
               단편집
             </Link>
-            <Link to="/" style={{ padding: "0 10px", fontSize: "12px" }}>
+            <Link to="/" style={{ padding: "0 10px", fontSize: "14px" }}>
               Zombie Apocaylpse Test V.18
             </Link>
           </Box>
@@ -36,7 +36,7 @@ const Main = () => {
         {/* Content */}
         <Box>
           <Box mt={"3rem"}>
-            <Typography variant="h4" style={{ fontWeight: "bold" }}>
+            <Typography variant="h3" style={{ fontWeight: "bold" }}>
               좀비 아포칼립스 테스트 v.18
             </Typography>
           </Box>

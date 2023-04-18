@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { RadioGroup, FormControlLabel, Radio } from "@mui/material";
+import "../index.css";
 const questions = [
   {
     id: 1,
@@ -220,106 +221,64 @@ function App() {
       selectedAnswer: null,
     }))
   );
-
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [fade, setFade] = useState(false);
 
   const handleAnswerSelect = (questionId, answer) => {
-    const updatedAnswers = selectedAnswers.map((selectedAnswer) =>
-      selectedAnswer.id === questionId
-        ? { ...selectedAnswer, selectedAnswer: answer }
-        : selectedAnswer
-    );
-    setSelectedAnswers(updatedAnswers);
-
-    if (currentQuestionIndex === questions.length - 1) {
-      // 마지막 질문인 경우
-      setCurrentQuestionIndex(-1); // 인덱스 초기화
-    } else {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-    }
+    setFade(true); // fadeOut 애니메이션 시작
+    setTimeout(() => {
+      const newSelectedAnswers = selectedAnswers.map((a) =>
+        a.id === questionId ? { ...a, selectedAnswer: answer } : a
+      );
+      setSelectedAnswers(newSelectedAnswers);
+      setCurrentQuestionIndex(currentQuestionIndex + 1); // 다음 질문으로 이동
+      setFade(false); // 다음 질문 표시하기 위해 fadeIn 애니메이션 시작
+    }, 500);
   };
 
-  const currentQuestion = questions[currentQuestionIndex];
-
-  const result = {};
-
-  selectedAnswers.forEach((selectedAnswer) => {
-    const { selectedAnswer: answer } = selectedAnswer;
-    if (answer) {
-      if (!result[answer]) {
-        result[answer] = 1;
-      } else {
-        result[answer]++;
-      }
-    }
-  });
-
   return (
-    <div
-      style={{
-        padding: "1.5rem",
-        "PrivateSwitchBase-input:checked": {
-          color: "#000",
-        },
-      }}
-    >
-      {currentQuestion && (
-        <div className={"transition"}>
-          <h2>{currentQuestion.questionText}</h2>
-          {currentQuestion.answers.map((answer, index) => (
-            <div>
-              <RadioGroup
-                key={answer}
-                style={{
-                  width: "100%",
-                  border: "1px solid #333",
-                  padding: "10px",
-                  boxSizing: "border-box",
-                  marginBottom: "16px",
-                  fontSize: "16px",
-                  cursor: "pointer",
-                }}
-              >
-                <FormControlLabel
-                  control={<Radio />}
-                  label={answer}
-   
-                  name={`question${currentQuestion.id}`}
-                  value={currentQuestion.values[index]}
-                  onChange={() =>
-                    handleAnswerSelect(
-                      currentQuestion.id,
-                      currentQuestion.values[index]
-                    )
-                  }
-                  checked={
-                    selectedAnswers.find(
-                      (selectedAnswer) =>
-                        selectedAnswer.id === currentQuestion.id &&
-                        selectedAnswer.selectedAnswer ===
-                          currentQuestion.values[index]
-                    ) !== undefined
-                  }
-                />
-              </RadioGroup>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {currentQuestionIndex === -1 && (
-        <div>
-          <h3>선택된 답변</h3>
-          <ul>
-            {Object.keys(result).map((answer) => (
-              <li key={answer}>
-                {answer} ({result[answer]}개)
-              </li>
-            ))}
-          </ul>
-          <p>수고하셨습니다!</p>
-        </div>
-      )}
+    <div>
+      <div className={`question-card ${fade ? "fade-out" : "fade-in"}`}>
+        {currentQuestionIndex < questions.length ? (
+          <>
+            <h1 className="question-title">
+              {questions[currentQuestionIndex].questionText}
+            </h1>
+            <ul className="answer-list">
+              {questions[currentQuestionIndex].answers.map((answer, index) => (
+                <li key={index}>
+                  <button className="answer-section"
+                    onClick={() =>
+                      handleAnswerSelect(
+                        questions[currentQuestionIndex].id,
+                        questions[currentQuestionIndex].values[index]
+                      )
+                    }
+                  >
+                    {answer}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </>
+        ) : (
+          <div>
+            <h2>퀴즈가 종료되었습니다!</h2>
+            <ul className="result-list">
+              {selectedAnswers.map((answer) => (
+                <li key={answer.id}>
+                  <span>{`질문 ${answer.id}: `}</span>
+                  <span>{`선택한 답변: ${
+                    answer.selectedAnswer
+                      ? answer.selectedAnswer
+                      : "선택하지 않음"
+                  }`}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
