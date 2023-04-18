@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import { RadioGroup, FormControlLabel, Radio } from "@mui/material";
 const questions = [
   {
     id: 1,
@@ -255,26 +255,35 @@ function App() {
   });
 
   return (
-    <div style={{ padding: "1.5rem" }}>
+    <div
+      style={{
+        padding: "1.5rem",
+        "PrivateSwitchBase-input:checked": {
+          color: "#000",
+        },
+      }}
+    >
       {currentQuestion && (
         <div className={"transition"}>
           <h2>{currentQuestion.questionText}</h2>
           {currentQuestion.answers.map((answer, index) => (
-            <div
-              key={answer}
-              style={{
-                width: "100%",
-                border: "1px solid #333",
-                padding: "20px",
-                boxSizing: "border-box",
-                marginBottom: "15px",
-                fontSize: "15px",
-                cursor: "pointer",
-              }}
-            >
-              <label>
-                <input
-                  type="radio"
+            <div>
+              <RadioGroup
+                key={answer}
+                style={{
+                  width: "100%",
+                  border: "1px solid #333",
+                  padding: "10px",
+                  boxSizing: "border-box",
+                  marginBottom: "16px",
+                  fontSize: "16px",
+                  cursor: "pointer",
+                }}
+              >
+                <FormControlLabel
+                  control={<Radio />}
+                  label={answer}
+   
                   name={`question${currentQuestion.id}`}
                   value={currentQuestion.values[index]}
                   onChange={() =>
@@ -292,8 +301,7 @@ function App() {
                     ) !== undefined
                   }
                 />
-                {answer}
-              </label>
+              </RadioGroup>
             </div>
           ))}
         </div>

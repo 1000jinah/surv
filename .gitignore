@@ -4,7 +4,10 @@
 /node_modules
 /.pnp
 .pnp.js
-
+230417.js
+230418.js
+230418ver2.js
+Test.jsx
 # testing
 /coverage
 
